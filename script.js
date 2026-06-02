@@ -34,12 +34,16 @@ function displayBook (){
         const tr = document.createElement("tr")
         const _delete = document.createElement("td")
         const _status = document.createElement("td")
+        let readTd = null;
         
         document.querySelectorAll("th[data-book]").forEach(ele => {
             const td = document.createElement("td");
-            td.id = `${book.id}-${ele.getAttribute("data-book")}`
-            td.textContent = book[ele.getAttribute("data-book")];
+            const key = ele.getAttribute("data-book")
+            td.textContent = book[key];
             tr.appendChild(td);
+            if (key == "read") {
+                readTd = td
+            }
         })
 
         tr.appendChild(_delete);
@@ -56,8 +60,10 @@ function displayBook (){
         status.textContent = "Status"
         status.addEventListener('click', () => {
             book.read = (book.read == "Yes") ? "No": "Yes"
-            const td = document.getElementById(`${book.id}-read`)
-            td.textContent = book.read
+            if (readTd) {
+                readTd.textContent = book.read
+            }
+            
         })
         _status.appendChild(status)
         tr.appendChild(_status);
