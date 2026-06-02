@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 
 const bookDialog = document.getElementById("bookDialog")
 const bookform = bookDialog.querySelector("#bookform");
@@ -25,40 +25,50 @@ function addBookToLibrary(title,author,pages,read) {
   // take params, create a book then store it in the array
     let book = new Book(title,author,pages,read);
     myLibrary.push(book);
-    displayBook(myLibrary);
+    displayBook();
 }
 
-function displayBook (myLibrary){
+function displayBook (){
     bookList.innerHTML = ""
     myLibrary.forEach(book => {
         const tr = document.createElement("tr")
-        const _title = document.createElement("td")
-        const _author = document.createElement("td")
-        const _pages = document.createElement("td")
-        const _read = document.createElement("td")
-        const _id = document.createElement("td")
         const _delete = document.createElement("td")
+        const _status = document.createElement("td")
         
-        _title.appendChild(document.createTextNode(book.title))
-        _author.appendChild(document.createTextNode(book.author))
-        _pages.appendChild(document.createTextNode(book.pages))
-        _read.appendChild(document.createTextNode(book.read))
-        _id.appendChild(document.createTextNode(book.id))
+        document.querySelectorAll("th[data-book]").forEach(ele => {
+            const td = document.createElement("td");
+            td.id = `${book.id}-${ele.getAttribute("data-book")}`
+            td.textContent = book[ele.getAttribute("data-book")];
+            tr.appendChild(td);
+        })
 
-        const elems = [_title, _author, _pages, _read, _id, _delete]
-        elems.forEach((ele) => tr.appendChild(ele))
-
-
-        bookList.appendChild(tr);
+        tr.appendChild(_delete);
 
         const deleteBook = document.createElement("button")
         deleteBook.textContent = "Delete"
         deleteBook.addEventListener('click', () => {
             bookList.removeChild(tr);
+            myLibrary = myLibrary.filter(_book => _book.id != book.id)
         });
         _delete.appendChild(deleteBook);
+
+        const status = document.createElement("button")
+        status.textContent = "Status"
+        status.addEventListener('click', () => {
+            book.read = (book.read == "Yes") ? "No": "Yes"
+            const td = document.getElementById(`${book.id}-read`)
+            td.textContent = book.read
+        })
+        _status.appendChild(status)
+        tr.appendChild(_status);
+
+        
+        bookList.appendChild(tr);
+        
     });
 }
+
+
 
 
 const addBook = document.getElementById("addBook");
