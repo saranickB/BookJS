@@ -1,0 +1,16 @@
+body{
+    padding: 10px;
+}
+
+h1{
+    text-align: center;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+#bookTable {
+    margin-top: 20px;
+}
