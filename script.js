@@ -10,32 +10,36 @@ const author = bookDialog.querySelector("#author");
 const pages = bookDialog.querySelector("#pages");
 const read = bookDialog.querySelector("#read");
 
-function Book(title,author,pages,read) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    this.id = crypto.randomUUID()
-    this.info = function () {
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.read = read
+        this.id = crypto.randomUUID()
+    }
+    
+    info() {
         return `${this.title}, ${this.author}, ${this.pages}, ${this.read}, ${this.id}`
-    }  
+    }
 }
 
-function addBookToLibrary(title,author,pages,read) {
-  // take params, create a book then store it in the array
-    let book = new Book(title,author,pages,read);
+
+function addBookToLibrary(title, author, pages, read) {
+    // take params, create a book then store it in the array
+    let book = new Book(title, author, pages, read);
     myLibrary.push(book);
     displayBook();
 }
 
-function displayBook (){
+function displayBook() {
     bookList.innerHTML = ""
     myLibrary.forEach(book => {
         const tr = document.createElement("tr")
         const _delete = document.createElement("td")
         const _status = document.createElement("td")
         let readTd = null;
-        
+
         document.querySelectorAll("th[data-book]").forEach(ele => {
             const td = document.createElement("td");
             const key = ele.getAttribute("data-book")
@@ -59,18 +63,18 @@ function displayBook (){
         const status = document.createElement("button")
         status.textContent = "Status"
         status.addEventListener('click', () => {
-            book.read = (book.read == "Yes") ? "No": "Yes"
+            book.read = (book.read == "Yes") ? "No" : "Yes"
             if (readTd) {
                 readTd.textContent = book.read
             }
-            
+
         })
         _status.appendChild(status)
         tr.appendChild(_status);
 
-        
+
         bookList.appendChild(tr);
-        
+
     });
 }
 
@@ -78,22 +82,22 @@ function displayBook (){
 
 
 const addBook = document.getElementById("addBook");
-addBook.addEventListener('click',function(){
-    if(title.value != "" && author.value !="" && pages.value != "" && read.value !=""){
+addBook.addEventListener('click', function () {
+    if (title.value != "" && author.value != "" && pages.value != "" && read.value != "") {
         bookDialog.close()
     }
-    
+
 });
 
 const newBook = document.getElementById("newBook");
-newBook.addEventListener('click',function(){
+newBook.addEventListener('click', function () {
     bookDialog.showModal()
     bookform.reset();
 });
 
-bookform.addEventListener('submit', function (event){
+bookform.addEventListener('submit', function (event) {
     event.preventDefault();
-    addBookToLibrary(title.value,author.value,pages.value,(read.checked ? "Yes": "No"));
+    addBookToLibrary(title.value, author.value, pages.value, (read.checked ? "Yes" : "No"));
 });
 
 
